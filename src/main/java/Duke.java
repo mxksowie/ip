@@ -9,18 +9,20 @@ public class Duke {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        // TaskList tasks = new TaskList();
 
         introduceDuke();
         greetUser();
-
-        while(echo(scan.nextLine())) {
+        
+        TaskList tasks = new TaskList();
+        
+        while(parseInput(scan.nextLine(), tasks)) {
+            printBreak();
+            System.out.println("\n");
         }             
 
         scan.close();
         byeUser();
         
-
     }
 
     /**
@@ -50,6 +52,7 @@ public class Duke {
     }
 
     private static void byeUser() {
+        printBreak();
         System.out.println(" Bye. Hope to see you again soon!");
         printBreak();
 
@@ -67,6 +70,24 @@ public class Duke {
         printBreak();
         System.out.println("   " + userInput);
         printBreak();
+        return true;
+    }
+
+
+    private static boolean parseInput(String userInput, TaskList tasks) {
+        if (userInput.equals("bye")) {
+            return false;
+        }
+        
+        if (userInput.equals("list")) {
+            printBreak();
+            System.out.println(tasks);
+            return true;
+        }
+        
+        printBreak();
+        System.out.println("   " + tasks.addTask(userInput));
+
         return true;
     }
 }
