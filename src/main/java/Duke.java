@@ -75,6 +75,27 @@ public class Duke {
 
 
     private static boolean parseInput(String userInput, TaskList tasks) {
+        String[] inputs = userInput.split(" ");
+
+        String keyword = inputs[0];
+
+        switch (keyword) {
+            case "bye":
+                return false;
+            case "list":
+                printBreak();
+                System.out.println(tasks);
+                return true;
+            case "done":
+                // change it
+                String msg = tasks.markComplete(Integer.parseInt(inputs[1]));
+                printBreak();
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println("     " + msg);
+                return true;
+        }
+
+        /** 
         if (userInput.equals("bye")) {
             return false;
         }
@@ -84,7 +105,8 @@ public class Duke {
             System.out.println(tasks);
             return true;
         }
-        
+        */
+
         printBreak();
         System.out.println("   " + tasks.addTask(userInput));
 

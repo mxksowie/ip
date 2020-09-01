@@ -16,4 +16,12 @@ public class Task {
         this.isComplete = true;
         return this.isComplete;
     }
+
+    protected boolean checkIsComplete() {
+        return this.isComplete;
+    }
+
+    protected String getCompletionStatusIcon() {
+        return (isComplete ? "[\u2713]" : "[\u2718]");
+    }
 }
