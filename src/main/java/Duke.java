@@ -13,9 +13,9 @@ public class Duke {
         introduceDuke();
         greetUser();
         
-        TaskList tasks = new TaskList();
+        TaskManager manager = new TaskManager();
         
-        while(parseInput(scan.nextLine(), tasks)) {
+        while(manager.parseInput(scan.nextLine())) {
             printBreak();
             System.out.println("\n");
         }             
@@ -27,8 +27,9 @@ public class Duke {
 
     /**
      * Prints a standard breakline meant to break up sections of text
+     * Dev note: Might have cyclic dependencies because of printBreak usage
      */
-    private static void printBreak() {
+    public static void printBreak() {
         System.out.println("  ________________________________________________________");
     }
 
@@ -70,46 +71,6 @@ public class Duke {
         printBreak();
         System.out.println("   " + userInput);
         printBreak();
-        return true;
-    }
-
-
-    private static boolean parseInput(String userInput, TaskList tasks) {
-        String[] inputs = userInput.split(" ");
-
-        String keyword = inputs[0];
-
-        switch (keyword) {
-            case "bye":
-                return false;
-            case "list":
-                printBreak();
-                System.out.println(tasks);
-                return true;
-            case "done":
-                // change it
-                String msg = tasks.markComplete(Integer.parseInt(inputs[1]));
-                printBreak();
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println("     " + msg);
-                return true;
-        }
-
-        /** 
-        if (userInput.equals("bye")) {
-            return false;
-        }
-        
-        if (userInput.equals("list")) {
-            printBreak();
-            System.out.println(tasks);
-            return true;
-        }
-        */
-
-        printBreak();
-        System.out.println("   " + tasks.addTask(userInput));
-
         return true;
     }
 }

@@ -9,7 +9,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.description; //Subject to change; return string rep for printing purposes
+        //Subject to change; return string rep for printing purposes
+        return this.getCompletionStatusIcon() + " " + this.description; 
     }
 
     protected boolean markAsComplete() {
@@ -21,7 +22,7 @@ public class Task {
         return this.isComplete;
     }
 
-    protected String getCompletionStatusIcon() {
+    private String getCompletionStatusIcon() {
         return (isComplete ? "[\u2713]" : "[\u2718]");
     }
 }
