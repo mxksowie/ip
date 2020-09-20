@@ -38,9 +38,15 @@ public class TaskManager {
                 try {
                     markComplete(Integer.parseInt(inputs[1]));
                 } catch (NumberFormatException e) {
-                    printError("You need to provide me with an integer.");
+                    printError("You need to provide me with an integer index.");
                 }
                 return true;
+            case "delete":
+                try {
+                    deleteTask(Integer.parseInt(inputs[1]));
+                } catch (NumberFormatException e) {
+                    printError("You need to provide me with an integer index.");
+                }
             case "todo":
                 addTodo(String.join(" ", Arrays.copyOfRange(inputs, 1, inputs.length)));
                 break;
@@ -57,12 +63,14 @@ public class TaskManager {
 
         System.out.println(String.format("  Now you have %s tasks in the list.", tasks.size()));
 
-
-
         return true;
     }
+    
+    private void deleteTask(int i) {
 
-    private void markComplete(int i){
+    }
+
+    private void markComplete(int i) {
         try {
             String msg = tasks.markComplete(i);
             Duke.printBreak();
@@ -70,7 +78,7 @@ public class TaskManager {
             System.out.println("     " + msg);
         } catch (IndexOutOfBoundsException e) {
             printError("I couldn't delete the task at position " + i +
-                    "\n   You don't have that many tasks in your list.");
+                    "\n   I think you don't have that many tasks in your list.");
         }
 
     }
@@ -98,7 +106,7 @@ public class TaskManager {
                 continue;
             }
 
-            if (input.equals("/at")){
+            if (input.equals("/at") || input.equals("at")){
                 flag = true;
                 continue;
             }
@@ -121,19 +129,11 @@ public class TaskManager {
                 deadlineWords.add(input);
                 continue;
             }
-            if (input.equals("/by")) {
+            if (input.equals("/by") || input.equals("by")) {
                 flag = true;
                 continue;
             }
-            /** 
-             * Dev note: the following commented out code assumes that / and not /by is the keyword.
-             * 
-            if (input.charAt(0) == '/' || flag) {
-                deadlineWords.add(input.substring(1));
-                flag = true;
-                continue;
-            }
-            */
+
             descriptionWords.add(input);
         }
 
