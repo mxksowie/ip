@@ -4,31 +4,31 @@ public class TaskList {
     private ArrayList<Task> tasks;
 
     public TaskList() {
-        this.tasks = new ArrayList<Task>();
+        tasks = new ArrayList<Task>();
     }
 
     public TaskList(String description) {
-        this.tasks = new ArrayList<Task>();
-        this.tasks.add(new Task(description));
+        tasks = new ArrayList<Task>();
+        tasks.add(new Task(description));
     }
 
     protected String addTask(String description) {
 
-        this.tasks.add(new Task(description));
+        tasks.add(new Task(description));
         
         return String.format("added: %s", description);
     }
 
     protected String addTodo(String description) {
         Task task = new Todo(description);
-        this.tasks.add(task);
+        tasks.add(task);
         
         return task.toString();
     }
 
     protected String addDeadline(String description, String deadline) {
         Task task = new Deadline(description, deadline);
-        this.tasks.add(task);
+        tasks.add(task);
         
         return task.toString();
     }
@@ -36,7 +36,7 @@ public class TaskList {
     
     protected String addEvent(String description, String detail) {
         Task task = new Event(description, detail);
-        this.tasks.add(task);
+        tasks.add(task);
         
         return task.toString();
     }
@@ -49,7 +49,11 @@ public class TaskList {
     }
 
     protected int size() {
-        return this.tasks.size();
+        return tasks.size();
+    }
+
+    protected String delete(int i) {
+        return tasks.remove(i - 1).toString();
     }
 
     @Override

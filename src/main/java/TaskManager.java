@@ -47,6 +47,7 @@ public class TaskManager {
                 } catch (NumberFormatException e) {
                     printError("You need to provide me with an integer index.");
                 }
+                break;
             case "todo":
                 addTodo(String.join(" ", Arrays.copyOfRange(inputs, 1, inputs.length)));
                 break;
@@ -67,7 +68,15 @@ public class TaskManager {
     }
     
     private void deleteTask(int i) {
-
+        try{
+            String task = tasks.delete(i);
+            Duke.printBreak();
+            System.out.println(String.format("  Noted. I've removed this task: \n    %s", task));
+        } catch (IndexOutOfBoundsException e) {
+            printError("I couldn't delete the task at position " + i +
+                    "\n   I think you don't have that many tasks in your list.");
+        }
+        
     }
 
     private void markComplete(int i) {
@@ -77,7 +86,7 @@ public class TaskManager {
             System.out.println("Nice! I've marked this task as done:");
             System.out.println("     " + msg);
         } catch (IndexOutOfBoundsException e) {
-            printError("I couldn't delete the task at position " + i +
+            printError("I couldn't mark the task at position " + i +
                     "\n   I think you don't have that many tasks in your list.");
         }
 
