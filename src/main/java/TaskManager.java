@@ -8,6 +8,12 @@ public class TaskManager {
         this.tasks = new TaskList();
     }
 
+    /**
+     * Parses the user input for keywords and commands.
+     * Calls the relevant methods to manage the list and print outputs to the user.
+     * @param userInput
+     * @return
+     */
     public boolean parseInput(String userInput) {
         String[] inputs = userInput.split(" ");
 
@@ -19,12 +25,28 @@ public class TaskManager {
             case "list":
                 listTaskList();
                 return true;
+            
+        }
+        
+        if (inputs.length == 1) {
+            printError("You need to tell me more about what you want to do.");
+            return true;
+        }
+        
+        switch (keyword) {
             case "done":
-                String msg = tasks.markComplete(Integer.parseInt(inputs[1]));
-                Duke.printBreak();
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println("     " + msg);
+                try {
+                    markComplete(Integer.parseInt(inputs[1]));
+                } catch (NumberFormatException e) {
+                    printError("You need to provide me with an integer index.");
+                }
                 return true;
+            case "delete":
+                try {
+                    deleteTask(Integer.parseInt(inputs[1]));
+                } catch (NumberFormatException e) {
+                    printError("You need to provide me with an integer index.");
+                }
             case "todo":
                 addTodo(String.join(" ", Arrays.copyOfRange(inputs, 1, inputs.length)));
                 break;
@@ -35,15 +57,30 @@ public class TaskManager {
                 addEvent(Arrays.copyOfRange(inputs, 1, inputs.length));
                 break;
             default: 
-                Duke.printBreak();
-                System.out.println("   " + tasks.addTask(userInput));
+                printError("Sorry. I don't know what that means");
+                return true;
         }
 
         System.out.println(String.format("  Now you have %s tasks in the list.", tasks.size()));
 
-
-
         return true;
+    }
+    
+    private void deleteTask(int i) {
+
+    }
+
+    private void markComplete(int i) {
+        try {
+            String msg = tasks.markComplete(i);
+            Duke.printBreak();
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println("     " + msg);
+        } catch (IndexOutOfBoundsException e) {
+            printError("I couldn't delete the task at position " + i +
+                    "\n   I think you don't have that many tasks in your list.");
+        }
+
     }
 
     private void listTaskList() {
@@ -69,17 +106,7 @@ public class TaskManager {
                 continue;
             }
 
-            /** 
-             * Dev note: the following commented out code assumes that / is the keyword
-             * and not /at
-            if (input.charAt(0) == '/' || flag) {
-                detailWords.add(input.substring(1));
-                flag = true;
-                continue;
-            }
-             */
-
-            if (input.equals("/at")){
+            if (input.equals("/at") || input.equals("at")){
                 flag = true;
                 continue;
             }
@@ -89,7 +116,7 @@ public class TaskManager {
         Duke.printBreak();
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + tasks.addEvent(String.join(" ", descriptionWords),
-                                                  String.join(" ", detailWords)));
+                String.join(" ", detailWords)));
     }
 
     private void addDeadline(String[] userInput) {
@@ -102,26 +129,23 @@ public class TaskManager {
                 deadlineWords.add(input);
                 continue;
             }
-            if (input.equals("/by")) {
+            if (input.equals("/by") || input.equals("by")) {
                 flag = true;
                 continue;
             }
-            /** 
-             * Dev note: the following commented out code assumes that / and not /by is the keyword.
-             * 
-            if (input.charAt(0) == '/' || flag) {
-                deadlineWords.add(input.substring(1));
-                flag = true;
-                continue;
-            }
-            */
+
             descriptionWords.add(input);
         }
 
         Duke.printBreak();
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + tasks.addDeadline(String.join(" ", descriptionWords),
-                                                  String.join(" ", deadlineWords)));
+                String.join(" ", deadlineWords)));
+    }
+
+    private void printError(String s) {
+        Duke.printBreak();
+        System.out.println("    " + s);
     }
 }
 
