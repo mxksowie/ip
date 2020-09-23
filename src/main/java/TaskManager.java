@@ -25,11 +25,10 @@ public class TaskManager {
             case "list":
                 listTaskList();
                 return true;
-            
         }
         
         if (inputs.length == 1) {
-            printError("You need to tell me more about what you want to do.");
+            Output.printError("You need to tell me more about what you want to do.");
             return true;
         }
         
@@ -38,14 +37,14 @@ public class TaskManager {
                 try {
                     markComplete(Integer.parseInt(inputs[1]));
                 } catch (NumberFormatException e) {
-                    printError("You need to provide me with an integer index.");
+                    Output.printError("You need to provide me with an integer index.");
                 }
                 return true;
             case "delete":
                 try {
                     deleteTask(Integer.parseInt(inputs[1]));
                 } catch (NumberFormatException e) {
-                    printError("You need to provide me with an integer index.");
+                    Output.printError("You need to provide me with an integer index.");
                 }
                 break;
             case "todo":
@@ -58,7 +57,7 @@ public class TaskManager {
                 addEvent(Arrays.copyOfRange(inputs, 1, inputs.length));
                 break;
             default: 
-                printError("Sorry. I don't know what that means");
+                Output.printError("Sorry. I don't know what that means");
                 return true;
         }
 
@@ -70,10 +69,10 @@ public class TaskManager {
     private void deleteTask(int i) {
         try{
             String task = tasks.delete(i);
-            Duke.printBreak();
+            Output.printBreak();
             System.out.println(String.format("  Noted. I've removed this task: \n    %s", task));
         } catch (IndexOutOfBoundsException e) {
-            printError("I couldn't delete the task at position " + i +
+            Output.printError("I couldn't delete the task at position " + i +
                     "\n   I think you don't have that many tasks in your list.");
         }
         
@@ -82,24 +81,23 @@ public class TaskManager {
     private void markComplete(int i) {
         try {
             String msg = tasks.markComplete(i);
-            Duke.printBreak();
+            Output.printBreak();
             System.out.println("Nice! I've marked this task as done:");
             System.out.println("     " + msg);
         } catch (IndexOutOfBoundsException e) {
-            printError("I couldn't mark the task at position " + i +
+            Output.printError("I couldn't mark the task at position " + i +
                     "\n   I think you don't have that many tasks in your list.");
         }
-
     }
 
     private void listTaskList() {
-        Duke.printBreak();
+        Output.printBreak();
         System.out.println("Here are the tasks in your list:");
         System.out.println(tasks);
     }
 
     private void addTodo(String userInput) {
-        Duke.printBreak();
+        Output.printBreak();
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + tasks.addTodo(userInput));
     }
@@ -114,7 +112,6 @@ public class TaskManager {
                 detailWords.add(input);
                 continue;
             }
-
             if (input.equals("/at") || input.equals("at")){
                 flag = true;
                 continue;
@@ -122,7 +119,7 @@ public class TaskManager {
             descriptionWords.add(input);
         }
 
-        Duke.printBreak();
+        Output.printBreak();
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + tasks.addEvent(String.join(" ", descriptionWords),
                 String.join(" ", detailWords)));
@@ -142,19 +139,14 @@ public class TaskManager {
                 flag = true;
                 continue;
             }
-
             descriptionWords.add(input);
         }
-
-        Duke.printBreak();
+        Output.printBreak();
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + tasks.addDeadline(String.join(" ", descriptionWords),
                 String.join(" ", deadlineWords)));
     }
 
-    private void printError(String s) {
-        Duke.printBreak();
-        System.out.println("    " + s);
-    }
+
 }
 
