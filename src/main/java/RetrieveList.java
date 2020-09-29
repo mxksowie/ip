@@ -10,6 +10,11 @@ public class RetrieveList {
     private static int TASK_STATUS_INDEX = 4;
     private static int TASK_DESCRIPTION_INDEX = 7;
     
+
+    /**
+     * RetrieveList attempts to load the previously stored list in [user.home]/duke-data.txt
+     * @return TaskManager object with pre-loaded list or an empty one if stored list could not be retrieved.
+     */
     public static TaskManager retrieveList() {
         try {
             String home = System.getProperty("user.home");

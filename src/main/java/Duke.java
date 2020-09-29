@@ -3,26 +3,38 @@ import java.util.Scanner;
 
 public class Duke {
     /**
-     * Main method which handles initialisation and closing interactions.
+     * Main method which handles initial and closing interactions.
      * @param args
      */
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
         Output.introduceDuke();
         Output.greetUser();
         
+        run();
 
-        scan.close();
         Output.byeUser();
     }
 
+
+    /**
+     *  Method containing the continuous while loop that parses user inputs and handles interactions accordingly
+     *  Also initialises the task list. Attempts to retrieve a stored task list, if any.
+     */
     private static void run() {
-        TaskManager manager = RetrieveList.retrieveList(); // new TaskManager();
+
+        Scanner scan = new Scanner(System.in);
+
+        TaskManager manager = RetrieveList.retrieveList();
         
         while(manager.parseInput(scan.nextLine())) {
             Output.printBreak();
-            System.out.println("\n");
-        }             
+            Output.printEmptyLine();
+        }
+
+        scan.close();
     }
+
+    
+    
 }
