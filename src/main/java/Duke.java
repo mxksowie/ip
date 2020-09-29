@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Duke {
     /**
-     * Main method which (strictly) handles IO
+     * Main method which handles initialisation and closing interactions.
      * @param args
      */
     public static void main(String[] args) {
@@ -12,13 +12,17 @@ public class Duke {
         Output.introduceDuke();
         Output.greetUser();
         
-        TaskManager manager = new TaskManager();
+
+        scan.close();
+        Output.byeUser();
+    }
+
+    private static void run() {
+        TaskManager manager = RetrieveList.retrieveList(); // new TaskManager();
         
         while(manager.parseInput(scan.nextLine())) {
             Output.printBreak();
             System.out.println("\n");
         }             
-        scan.close();
-        Output.byeUser();
     }
 }
