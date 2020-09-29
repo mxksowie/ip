@@ -1,11 +1,18 @@
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.InvalidPathException;
 
 public class TaskManager {
     private TaskList tasks;
 
     public TaskManager() {
         this.tasks = new TaskList();
+    }
+
+    public TaskManager(TaskList tasks) {
+        this.tasks = tasks;
     }
 
     /**
@@ -24,6 +31,9 @@ public class TaskManager {
                 return false;
             case "list":
                 listTaskList();
+                return true;
+            case "save":
+                saveTaskList();
                 return true;
         }
         
@@ -62,10 +72,13 @@ public class TaskManager {
         }
 
         System.out.println(String.format("  Now you have %s tasks in the list.", tasks.size()));
+        
+        saveTaskList(); // task list is automatically saved without user input of save.
 
         return true;
     }
     
+
     private void deleteTask(int i) {
         try{
             String task = tasks.delete(i);
@@ -76,6 +89,16 @@ public class TaskManager {
                     "\n   I think you don't have that many tasks in your list.");
         }
         
+    }
+
+    private void saveTaskList() {
+        try {
+            String home = System.getProperty("user.home");
+            Path path = Paths.get(home, "duke-data.txt");
+            tasks.saveToFile(path);
+        } catch (InvalidPathException e) {
+            Output.printError("Not able to path the file.");
+        }
     }
 
     private void markComplete(int i) {

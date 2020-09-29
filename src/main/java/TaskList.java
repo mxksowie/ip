@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.nio.file.Path;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -41,6 +42,37 @@ public class TaskList {
         return task.toString();
     }
 
+    protected String addTodo(String description, boolean status) {
+        Task task = new Todo(description);
+        if (status) {
+            task.markAsComplete();
+        }
+        tasks.add(task);
+        
+        return task.toString();
+    }
+
+    protected String addDeadline(String description, String deadline, boolean status) {
+        Task task = new Deadline(description, deadline);
+        if (status) {
+            task.markAsComplete();
+        }
+        tasks.add(task);
+        
+        return task.toString();
+    }
+
+    
+    protected String addEvent(String description, String detail, boolean status) {
+        Task task = new Event(description, detail);
+        if (status) {
+            task.markAsComplete();
+        }
+        tasks.add(task);
+        
+        return task.toString();
+    }
+
     protected String markComplete(int index) {
         index = index - 1; // start from 0 instead of 1
         Task task = tasks.get(index);
@@ -55,6 +87,11 @@ public class TaskList {
     protected String delete(int i) {
         return tasks.remove(i - 1).toString();
     }
+
+    protected void saveToFile(Path path) {
+        SaveList.saveListToFile(path, tasks);
+    }
+
 
     @Override
     public String toString() {
