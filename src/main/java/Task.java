@@ -1,3 +1,7 @@
+/**
+ * Data class to contain task descriptions and its completion status.
+ * Parent class of Todo, Event, Deadline.
+ */
 public class Task {
     protected String description;
     private boolean isComplete;
