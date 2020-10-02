@@ -9,7 +9,6 @@ public class Task {
 
     @Override
     public String toString() {
-        //Subject to change; return string rep for printing purposes
         return this.getCompletionStatusIcon() + " " + this.description; 
     }
 
