@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Wrapper class for the underlying implementation of tasklist as an arraylist.
@@ -142,6 +144,38 @@ public class TaskList {
                 continue;
             }
             matchingTasks.add(task);
+        }
+
+        return listToString(matchingTasks);
+    }
+
+    /**
+     * Searches the task list for (dated) tasks that match the date queried by the user
+     * @param dateString ISO formated date as a string
+     * @return list of matched tasks as a string
+     * @throws DateTimeParseException exception thrown as is.
+     */
+    protected String findTasksWithDate(String dateString) throws DateTimeParseException {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        CharSequence dateCharSeq = new StringBuffer(dateString.strip());
+        
+        try {
+            LocalDate localDate = LocalDate.parse(dateCharSeq);
+            for (Task task : tasks) {
+                if (!(task instanceof DatedTask)) {
+                    continue;
+                }
+                DatedTask datedTask = (DatedTask) task;
+                if (datedTask.getBy().isEmpty()) {
+                    continue;
+                }
+                if (!(localDate.equals(datedTask.getBy().get()))) {
+                    continue;
+                }
+                matchingTasks.add(task);
+            }
+        } catch (DateTimeParseException e) {
+            throw e;
         }
 
         return listToString(matchingTasks);

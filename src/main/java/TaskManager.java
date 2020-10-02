@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.InvalidPathException;
+import java.time.format.DateTimeParseException;
 
 /**
  * Manager class that interprets user commands and executes them.
@@ -85,6 +86,9 @@ public class TaskManager {
         case "find":
             findTasks(String.join(" ", Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length)));
             return true;
+        case "dated":
+            findDated(String.join(" ", Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length)));
+            return true;
         default: 
             Output.printError("Sorry. I don't know what that means");
             return true;
@@ -95,6 +99,15 @@ public class TaskManager {
         saveTaskList(); // task list is automatically saved without user input of save.
 
         return true;
+    }
+
+    private void findDated(String date) {
+        try{
+            Output.printMatches(tasks.findTasksWithDate(date));
+        } catch (DateTimeParseException e) {
+            Output.printError("Sorry, I could not figure out that date. It needs to be in ISO format.");
+        }
+        
     }
 
     private void findTasks(String keyword) {
