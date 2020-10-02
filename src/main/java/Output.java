@@ -1,3 +1,8 @@
+
+/**
+ * Class that strictly handles all System.outs to the user.
+ * Formats the outputs for consistency/the apearance of a UI.
+ */
 public class Output {
 
     /**
@@ -51,24 +56,39 @@ public class Output {
         System.out.println("\n");
     }
 
+    /**
+     * Informs user of task that has been deleted.
+     * @param taskString
+     */
     protected static void printDeletedTask(String taskString) {
         System.out.println(String.format("  Noted. I've removed this task: \n    %s", taskString));
     }
 
+    /**
+     * Informs user of task that has been added.
+     * @param taskString
+     */
     protected static void printAddedTask(String taskString) {
         System.out.println("Got it. I've added this task :");
         System.out.println("   " + taskString);
     }
-
+    /**
+     * Informs user of task that has been updated and marked as complete/done.
+     */
     protected static void printCompletedTask(String taskString) {
         System.out.println("Nice! I've marked this task as done:");
         System.out.println("     " + taskString);
     }
 
+    /**
+     * Presents the user with their list.
+     * @param listString string representation of the tasklist
+     */
     protected static void printTaskList (String listString) {
         System.out.println("Here are the tasks in your list:");
         System.out.println(listString);
     }
+
 
     protected static void printMatches (String matchList) {
         printBreak();
@@ -81,6 +101,12 @@ public class Output {
         System.out.println(matchList);
     }
 
+
+  
+     /**
+     * Conveniently inform the user of the number of tasks in their list after having executed commands.
+     * @param count
+     */
     protected static void printTaskCount(int count) {
         System.out.println(String.format("  Now you have %s tasks in the list.", count));
     }

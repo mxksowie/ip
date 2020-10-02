@@ -4,7 +4,10 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Files;
 import java.io.IOException;
 
-
+/**
+ * Instantiates TaskManager objects.
+ * Provides a TaskManager object with the retrieved list if successful in retrieval.
+ */
 public class RetrieveList {
     private static int TASK_TYPE_INDEX = 1;
     private static int TASK_STATUS_INDEX = 4;

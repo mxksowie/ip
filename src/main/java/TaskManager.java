@@ -4,24 +4,37 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.InvalidPathException;
 
-
+/**
+ * Manager class that interprets user commands and executes them.
+ */
 public class TaskManager {
     private TaskList tasks;
     private int COMMAND_START_INDEX= 1;
 
+    /**
+     * Default constructor method that creates a new TaskList.
+     * Intended for first time use and when the previous list could not be retrieved.
+     */
     public TaskManager() {
         this.tasks = new TaskList();
     }
 
+    /**
+     * Constructor method to allow TaskManager to be instantiated with an existing TaskList.
+     * Necessary to support loading previously saved lists.
+     * @param tasks
+     */
     public TaskManager(TaskList tasks) {
         this.tasks = tasks;
     }
 
     /**
      * Parses the user input for keywords and commands.
-     * Calls the relevant methods to manage the list and print outputs to the user.
-     * @param userInput
-     * @return
+     * Calls the relevant methods to manage the list.
+     * Also informs user of parsing related errors: unrecognised keyword, not enough inputs, invalid input type.
+     * 
+     * @param userInput scanned user input
+     * @return boolean that informs the while loop if the program should still proceed.
      */
     public boolean parseInput(String userInput) {
         String[] inputs = userInput.split(" ");
@@ -100,6 +113,10 @@ public class TaskManager {
         
     }
 
+    /**
+     * Saves the tasklist to the user's home directory under duke-data.txt
+     * Informs user of error where their home directory is not available.
+     */
     private void saveTaskList() {
         try {
             String home = System.getProperty("user.home");
@@ -142,6 +159,12 @@ public class TaskManager {
         Output.printAddedTask(tasks.addDeadline(taskInfo.first, taskInfo.second));
     }
 
+    /**
+     * Helper method to parse userInput and get the pair of arguments for addDeadline and addEvent.
+     * @param userInput
+     * @param command the keyword that is used by the command to indicate that a timing/venue is subsequently written.
+     * @return
+     */
     private StringPair splitAtCommand(String[] userInput, String command) {
         boolean flag = false;
         ArrayList<String> detailWords = new ArrayList<>();
