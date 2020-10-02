@@ -11,33 +11,42 @@ The vanilla type of task, requiring just a description of it.
 e.g. Read a book.
 Example of usage:
 
-`todo Read a book`
+```
+todo Read a book
+```
 
 Expected outcome:
 
-`Got it. I've added this task :
+```
+Got it. I've added this task :
    [T][✘] read a book
-  Now you have 1 tasks in the list.`
+  Now you have 1 tasks in the list.
+  ```
 
 ### Deadlines
 Tasks with both a descriptor and a deadline.
 e.g. Read a book by midnight
 
 Example of usage:
-`deadline read a book by midnight`
+```
+deadline read a book by midnight
+```
 
 Expected outcome:
-`Got it. I've added this task :
+```
+Got it. I've added this task :
    [D][✘] read a book (by: midnight)
-  Now you have 2 tasks in the list.`
+  Now you have 2 tasks in the list.
+```
 
 ### Events
 Tasks with a descriptor and venue and/or time.
 e.g. read a book at the library
 
 Example of usuage:
-`event read a book at the library`
-
+```
+event read a book at the library
+```
 Expected outcome:
 ```
 Got it. I've added this task :
@@ -50,7 +59,9 @@ Got it. I've added this task :
 To view all the tasks in your list, use the `list` command.
 
 Example of usuage:
-`list`
+```
+list
+```
 
 Expected outcome:
 ```
@@ -66,7 +77,9 @@ Now you have 3 tasks in the list.
 Find all tasks that contain a certain phrase or word using the `find` command.
 
 Example of usuage:
-`find book`
+```
+find book
+```
 
 Expected outcome:
 ```
@@ -84,7 +97,9 @@ Tasks can be deleted and marked as complete.
 Tasks are marked complete using the `done` keyword
 
 Example of usuage:
-`done 1`
+```
+done 1
+```
 
 Expected outcome:
 ```
@@ -97,7 +112,9 @@ Nice! I've marked this task as done:
 Tasks are deleted using the `delete` keyword
 
 Example of usuage:
-`delete 1`
+```
+delete 1
+```
 
 Expected outcome:
 ```
@@ -111,7 +128,11 @@ Expected outcome:
 Finally, to end the application, use the `bye` keyword
 
 Example of usuage:
-`bye`
+```
+bye
+```
 
 Expected outcome:
-` Bye. Hope to see you again soon!`
+```
+Bye. Hope to see you again soon!
+```
