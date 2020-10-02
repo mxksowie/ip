@@ -11,8 +11,8 @@ public class DatedTask extends Task{
         super(description);
         this.detail = date;
         try {
-            CharSequence dateChars = new StringBuffer(date.strip());
-            LocalDate localDate = LocalDate.parse(dateChars);
+            CharSequence dateCharSeq = new StringBuffer(date.strip());
+            LocalDate localDate = LocalDate.parse(dateCharSeq);
             this.date = Optional.of(localDate);
         } catch (DateTimeParseException e) {
             this.date = Optional.empty();
