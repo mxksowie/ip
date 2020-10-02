@@ -81,6 +81,10 @@ public class TaskManager {
         case "event":
             addEvent(Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length));
             break;
+
+        case "find":
+            findTasks(String.join(" ", Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length)));
+            return true;
         default: 
             Output.printError("Sorry. I don't know what that means");
             return true;
@@ -91,6 +95,10 @@ public class TaskManager {
         saveTaskList(); // task list is automatically saved without user input of save.
 
         return true;
+    }
+
+    private void findTasks(String keyword) {
+        Output.printMatches(tasks.findTasksWithKeyword(keyword));
     }
 
 

@@ -89,7 +89,21 @@ public class Output {
         System.out.println(listString);
     }
 
-    /**
+
+    protected static void printMatches (String matchList) {
+        printBreak();
+        if (matchList.length() == 0) {
+            System.out.println("  Sorry! I couldn't find any matches.");
+            return;
+        }
+
+        System.out.println("Here are the matching tasks in your list:");
+        System.out.println(matchList);
+    }
+
+
+  
+     /**
      * Conveniently inform the user of the number of tasks in their list after having executed commands.
      * @param count
      */
