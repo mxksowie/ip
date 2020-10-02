@@ -26,5 +26,9 @@ public class Task {
         return (isComplete ? "[\u2713]" : "[\u2718]");
     }
 
+    protected String getDescription() {
+        return this.description;
+    }
+
 
 }

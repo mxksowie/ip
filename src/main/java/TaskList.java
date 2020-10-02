@@ -92,16 +92,38 @@ public class TaskList {
         SaveList.saveListToFile(path, tasks);
     }
 
+    protected String findTasksWithKeyword(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        CharSequence keywordCharSeq = new StringBuffer(keyword.toLowerCase());
+
+        for (Task task : tasks) {
+            // Use the task's description for a case insensitve comparison (all lower case)
+            String taskDescription = task.getDescription().toLowerCase(); 
+            if (! taskDescription.contains(keywordCharSeq)){
+                continue;
+            }
+            matchingTasks.add(task);
+        }
+
+        return listToString(matchingTasks);
+    }
+
+    private String listToString(ArrayList<Task> list) {
+        String listString = "";
+
+        for (int i = 1; i <= list.size(); i++) {
+            Task task = list.get(i - 1);
+            listString += i + ". "
+                    + task.toString() + "\n";
+        }
+        return listString;
+    }
 
     @Override
     public String toString() {
-        String result = "";
-        //for (Task task : tasks) {
-        for (int i = 1; i <= tasks.size(); i++) {
-            Task task = tasks.get(i - 1);
-            result += i + ". " // + task.getCompletionStatusIcon() + " "
-                    + task.toString() + "\n";
-        }
+
+        String result = listToString(tasks);
+
         result += String.format("Now you have %s tasks in the list.", tasks.size());
 
         return result;
