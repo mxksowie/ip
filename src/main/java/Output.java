@@ -50,4 +50,27 @@ public class Output {
     public static void printEmptyLine() {
         System.out.println("\n");
     }
+
+    protected static void printDeletedTask(String taskString) {
+        System.out.println(String.format("  Noted. I've removed this task: \n    %s", taskString));
+    }
+
+    protected static void printAddedTask(String taskString) {
+        System.out.println("Got it. I've added this task :");
+        System.out.println("   " + taskString);
+    }
+
+    protected static void printCompletedTask(String taskString) {
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("     " + taskString);
+    }
+
+    protected static void printTaskList (String listString) {
+        System.out.println("Here are the tasks in your list:");
+        System.out.println(listString);
+    }
+
+    protected static void printTaskCount(int count) {
+        System.out.println(String.format("  Now you have %s tasks in the list.", count));
+    }
 }

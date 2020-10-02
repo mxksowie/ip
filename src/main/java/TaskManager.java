@@ -4,8 +4,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.InvalidPathException;
 
+
 public class TaskManager {
     private TaskList tasks;
+    private int COMMAND_START_INDEX= 1;
 
     public TaskManager() {
         this.tasks = new TaskList();
@@ -37,55 +39,54 @@ public class TaskManager {
                 return true;
         }
         
-        if (inputs.length == 1) {
+        if (inputs.length == COMMAND_START_INDEX) {
             Output.printError("You need to tell me more about what you want to do.");
             return true;
         }
         
         switch (keyword) {
-            case "done":
-                try {
-                    markComplete(Integer.parseInt(inputs[1]));
-                } catch (NumberFormatException e) {
-                    Output.printError("You need to provide me with an integer index.");
-                }
-                return true;
-            case "delete":
-                try {
-                    deleteTask(Integer.parseInt(inputs[1]));
-                } catch (NumberFormatException e) {
-                    Output.printError("You need to provide me with an integer index.");
-                }
-                break;
-            case "todo":
-                addTodo(String.join(" ", Arrays.copyOfRange(inputs, 1, inputs.length)));
-                break;
-            case "deadline":
-                addDeadline(Arrays.copyOfRange(inputs, 1, inputs.length));
-                break;
-            case "event":
-                addEvent(Arrays.copyOfRange(inputs, 1, inputs.length));
-                break;
-            default: 
-                Output.printError("Sorry. I don't know what that means");
-                return true;
+        case "done":
+            try {
+                markComplete(Integer.parseInt(inputs[COMMAND_START_INDEX]));
+            } catch (NumberFormatException e) {
+                Output.printError("You need to provide me with an integer index.");
+            }
+            return true;
+        case "delete":
+            try {
+                deleteTask(Integer.parseInt(inputs[COMMAND_START_INDEX]));
+            } catch (NumberFormatException e) {
+                Output.printError("You need to provide me with an integer index.");
+            }
+            break;
+        case "todo":
+            addTodo(String.join(" ", Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length)));
+            break;
+        case "deadline":
+            addDeadline(Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length));
+            break;
+        case "event":
+            addEvent(Arrays.copyOfRange(inputs, COMMAND_START_INDEX, inputs.length));
+            break;
+        default: 
+            Output.printError("Sorry. I don't know what that means");
+            return true;
         }
 
-        System.out.println(String.format("  Now you have %s tasks in the list.", tasks.size()));
+        Output.printTaskCount(tasks.size());
         
         saveTaskList(); // task list is automatically saved without user input of save.
 
         return true;
     }
-    
 
-    private void deleteTask(int i) {
+
+    private void deleteTask(int index) {
         try{
-            String task = tasks.delete(i);
             Output.printBreak();
-            System.out.println(String.format("  Noted. I've removed this task: \n    %s", task));
+            Output.printDeletedTask(tasks.delete(index));
         } catch (IndexOutOfBoundsException e) {
-            Output.printError("I couldn't delete the task at position " + i +
+            Output.printError("I couldn't delete the task at position " + index +
                     "\n   I think you don't have that many tasks in your list.");
         }
         
@@ -101,31 +102,39 @@ public class TaskManager {
         }
     }
 
-    private void markComplete(int i) {
+    private void markComplete(int index) {
         try {
-            String msg = tasks.markComplete(i);
             Output.printBreak();
-            System.out.println("Nice! I've marked this task as done:");
-            System.out.println("     " + msg);
+            Output.printCompletedTask(tasks.markComplete(index));
         } catch (IndexOutOfBoundsException e) {
-            Output.printError("I couldn't mark the task at position " + i +
+            Output.printError("I couldn't mark the task at position " + index +
                     "\n   I think you don't have that many tasks in your list.");
         }
     }
 
     private void listTaskList() {
         Output.printBreak();
-        System.out.println("Here are the tasks in your list:");
-        System.out.println(tasks);
+        Output.printTaskList(tasks.toString());
     }
 
     private void addTodo(String userInput) {
         Output.printBreak();
-        System.out.println("Got it. I've added this task :");
-        System.out.println("   " + tasks.addTodo(userInput));
+        Output.printAddedTask(tasks.addTodo(userInput));
     }
 
     private void addEvent(String[] userInput) {
+        StringPair taskInfo = splitAtCommand(userInput, "at");
+        Output.printBreak();
+        Output.printAddedTask(tasks.addEvent(taskInfo.first, taskInfo.second));
+    }
+
+    private void addDeadline(String[] userInput) {
+        StringPair taskInfo = splitAtCommand(userInput, "by");
+        Output.printBreak();
+        Output.printAddedTask(tasks.addDeadline(taskInfo.first, taskInfo.second));
+    }
+
+    private StringPair splitAtCommand(String[] userInput, String command) {
         boolean flag = false;
         ArrayList<String> detailWords = new ArrayList<>();
         ArrayList<String> descriptionWords = new ArrayList<>();
@@ -135,40 +144,16 @@ public class TaskManager {
                 detailWords.add(input);
                 continue;
             }
-            if (input.equals("/at") || input.equals("at")){
+            if (input.equals("/" + command) || input.equals(command)) {
                 flag = true;
                 continue;
             }
             descriptionWords.add(input);
         }
-
-        Output.printBreak();
-        System.out.println("Got it. I've added this task :");
-        System.out.println("   " + tasks.addEvent(String.join(" ", descriptionWords),
-                String.join(" ", detailWords)));
-    }
-
-    private void addDeadline(String[] userInput) {
-        boolean flag = false;
-        ArrayList<String> deadlineWords = new ArrayList<>();
-        ArrayList<String> descriptionWords = new ArrayList<>();
+        return new StringPair(String.join(" ", descriptionWords), String.join(" ", detailWords));
         
-        for (String input : userInput) {
-            if (flag) {
-                deadlineWords.add(input);
-                continue;
-            }
-            if (input.equals("/by") || input.equals("by")) {
-                flag = true;
-                continue;
-            }
-            descriptionWords.add(input);
-        }
-        Output.printBreak();
-        System.out.println("Got it. I've added this task :");
-        System.out.println("   " + tasks.addDeadline(String.join(" ", descriptionWords),
-                String.join(" ", deadlineWords)));
     }
+
 
 
 }

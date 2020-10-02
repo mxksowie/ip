@@ -25,9 +25,6 @@ public class Task {
     private String getCompletionStatusIcon() {
         return (isComplete ? "[\u2713]" : "[\u2718]");
     }
-    
-    public String toTextRep() {
-        return this.description;
-    }
+
 
 }
